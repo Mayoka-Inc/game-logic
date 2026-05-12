@@ -1,33 +1,36 @@
-# Neon Surge: Game Logic
+# 🧠 Neon Surge | Game Logic
 
-## Superpowered 10-Agent Architecture
+### 🤖 Meet the Agent: The Mastermind
+**The Mastermind, the Logic Agent**, is the calculating strategist behind the Data Stream. Always three steps ahead, he orchestrates the flow of reality, scaling the challenge to match the runner's skill. He is the invisible hand that guides every session from start to finish, ensuring the game loop remains unbroken and the rules of the simulation are absolute.
 
-| Agent | Role | Focus |
+### ⚡ Superpowers
+*   **Finite State Machine**: Seamlessly transitions between MENU, PLAYING, PAUSED, and GAME_OVER states with absolute authority.
+*   **Weighted Pattern Spawner**: Deploys advanced obstacle formations (Random, Wall, Spiral) to challenge the runner's reflexes.
+*   **Level-Up Milestones**: Triggers environmental color shifts and music tempo increases as the player achieves performance goals.
+*   **Dynamic Difficulty Scaling**: Real-time adjustment of game speed and hazard density based on the player's survival time.
+
+### 🌐 The 10-Agent Architecture
+Neon Surge is powered by a collaborative network of 10 specialized agents, each mastering a unique domain of the Data Stream.
+
+| Agent | Role | Repository |
 | :--- | :--- | :--- |
-| **Core Engine** | Scene Management | Three.js rendering, camera control, and global tick synchronization. |
-| **Input System** | Control Mapping | Translating hardware events (WASD/Touch) into actionable game commands. |
-| **Audio System** | Sonic Synthesis | Procedural synthwave generation and real-time sound effect triggering. |
-| **Physics System** | Spatial Math | Collision detection and cylindrical coordinate transformations. |
-| **UI System** | Interface Layer | Managing the DOM-based HUD, score displays, and game state overlays. |
-| **Player Entity** | Avatar Controller | Ship visuals, movement constraints, and state-based animations. |
-| **Obstacle Entity** | Hazard Manager | Efficient object pooling and procedural spawning of geometric hazards. |
-| **Game Logic** | State Orchestrator | Managing lifecycle events, difficulty scaling, and game-over conditions. |
-| **Design Docs** | Knowledge Base | Maintaining the GDD, architectural blueprints, and narrative lore. |
-| **Build Config** | DevOps Pipeline | Streamlining Vite builds, dependency management, and deployment scripts. |
+| **The Heart** | Core Engine & Orchestration | `core-engine` |
+| **The Senses** | Input Processing & Mapping | `input-system` |
+| **The Voice** | Procedural Audio & Soundscapes | `audio-system` |
+| **The Laws** | Physics & Collision Detection | `physics-system` |
+| **The Face** | User Interface & Neon HUD | `ui-system` |
+| **The Hero** | Player Entity & Controller | `player-entity` |
+| **The Hazard** | Obstacle Intelligence | `obstacle-entity` |
+| **The Mastermind** | Game Rules & State Logic | `game-logic` |
+| **The Blueprint** | Lore & Documentation | `design-docs` |
+| **The Architect** | Build & Deployment | `build-config` |
 
-## Technical Breakdown for the Team
-
-- **Security**: Hardened input validation and state protection to prevent unauthorized command injection or state manipulation.
-- **Modularity**: Strict micro-agent boundaries ensuring that any module can be replaced or updated without breaking the core loop.
-- **Visuals**: Low-poly neon aesthetics optimized for high-performance rendering across all device tiers.
-- **AI**: Procedural obstacle placement logic that scales in complexity and density based on real-time performance metrics.
-- **Audio**: A dynamic audio engine that adjusts BPM and synthesis parameters in sync with game acceleration.
-
-## Module Focus: Game Logic
-
-The **Game Logic** agent orchestrates state transitions, game-over conditions, and the core progression logic of Neon Surge.
-
-**Superpowers:**
-- Centralized state machine for robust lifecycle management.
-- Progressive difficulty scaling algorithms (speed and hazard density).
-- High-score persistence and session data orchestration.
+### 🛠️ How to Run
+1. Ensure you have [Node.js](https://nodejs.org/) installed.
+2. Clone this agent into the `repos/` directory.
+3. This agent is typically orchestrated by the [build-config](https://github.com/mayoka0/build-config) agent.
+4. To run standalone tests:
+   ```bash
+   npm install
+   npm run dev
+   ```
