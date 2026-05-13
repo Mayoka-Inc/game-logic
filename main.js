@@ -45,6 +45,7 @@ engine.scene.add(engine.camera);
 let currentState = GameState.MENU;
 let score = 0;
 let level = 1;
+let comboMultiplier = 1;
 let speed = INITIAL_SPEED;
 let obstacles = [];
 let tunnelSegments = [];
@@ -235,6 +236,18 @@ window.addEventListener('keydown', (e) => {
             setGameState(GameState.PLAYING);
         }
     }
+    
+    if (e.code === 'Space' && currentState === GameState.PLAYING) {
+        const direction = new THREE.Vector2(0, 0);
+        if (inputHandler.isPressed('a') || inputHandler.isPressed('ArrowLeft')) direction.x -= 1;
+        if (inputHandler.isPressed('d') || inputHandler.isPressed('ArrowRight')) direction.x += 1;
+        if (inputHandler.isPressed('w') || inputHandler.isPressed('ArrowUp')) direction.y += 1;
+        if (inputHandler.isPressed('s') || inputHandler.isPressed('ArrowDown')) direction.y -= 1;
+        
+        if (direction.length() > 0) {
+            player.dash(direction);
+        }
+    }
 });
 
 // --- GAME LOOP ---
@@ -252,6 +265,19 @@ function animate() {
         for (let i = obstacles.length - 1; i >= 0; i--) {
             const obstacle = obstacles[i];
             obstacle.update(speed);
+
+            // Near Miss Detection
+            if (!obstacle.hasBeenDodged && obstacle.mesh.position.z > player.mesh.position.z) {
+                const dx = obstacle.mesh.position.x - player.mesh.position.x;
+                const dy = obstacle.mesh.position.y - player.mesh.position.y;
+                const distXY = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distXY < 3.5) {
+                    comboMultiplier++;
+                    uiManager.updateMultiplier(comboMultiplier);
+                }
+                obstacle.hasBeenDodged = true;
+            }
 
             // Scoring and Cleanup
             if (obstacle.mesh.position.z > 10) {
@@ -293,6 +319,8 @@ function animate() {
 
 function gameOver() {
     currentState = GameState.GAME_OVER;
+    comboMultiplier = 1;
+    uiManager.updateMultiplier(comboMultiplier);
     audioManager.playZap();
     uiManager.showGameOver(score);
 }

@@ -10,27 +10,11 @@
 *   **Dynamic Speed Scaling**: A precise acceleration curve that increases by `0.0001` per frame, pushing the limits of the neural interface.
 
 ### 🛠️ Technical Spec
-Nexus resides in the root `main.js` and serves as the integration point for all specialized modules.
-- **State Management**: Uses a `GameState` enum to drive the main execution loop. Transitioning to `PLAYING` initializes the `AudioManager` and starts the `Engine` render cycle.
-- **Pattern Logic**: The `spawnPattern()` function uses a weighted randomizer (50% Random, 30% Wall, 20% Spiral) to ensure the Data Stream remains unpredictable yet structured.
-- **Milestone Engine**: `checkLevelUp()` evaluates `score % 500`. On trigger, it performs a hex-color cycle across the `FogExp2` and `MeshStandardMaterial` emissive channels of the tunnel segments.
-- **Collision Feedback**: On detection from the `CollisionSystem`, Nexus triggers the `playZap()` audio event and invokes the `UIManager` game-over sequence.
+Nexus resides in the project's root `main.js` and serves as the integration point for all specialized modules. Its core is a robust **Master State Machine** that drives the main execution loop, transitioning the system through `MENU`, `PLAYING`, `PAUSED`, and `GAME_OVER` states. This orchestration ensures that all sub-systems—including the Audio, UI, and Engine modules—are perfectly synchronized. For example, transitioning to the `PLAYING` state simultaneously initializes the `AudioManager` and triggers the `Engine` to begin its high-performance rendering cycle.
 
-### 🌐 The 10-Agent Architecture
-Neon Surge is powered by a collaborative network of 10 specialized agents, each mastering a unique domain of the Data Stream.
+The agent also implements a sophisticated **Weighted Spawning Engine** and a dynamic milestone system. The `spawnPattern()` function uses weighted probabilities (50% Random, 30% Wall, 20% Spiral) to ensure that the Data Stream remains challenging yet structured. Every 500 points, the `checkLevelUp()` routine triggers a global environmental shift, performing a hex-color cycle across the fog and tunnel materials to signal a new stage of difficulty. This is paired with a precise **Dynamic Speed Scaling** algorithm that increases the simulation's velocity by `0.0001` per frame, pushing the player's reflexes to their absolute limit.
 
-| Agent | Role | Repository |
-| :--- | :--- | :--- |
-| **Atlas** | Core Engine & Orchestration | `core-engine` |
-| **Cerebro** | Input Processing & Mapping | `input-system` |
-| **Aura** | Procedural Audio & Soundscapes | `audio-system` |
-| **Vortex** | Physics & Collision Detection | `physics-system` |
-| **Iris** | User Interface & Neon HUD | `ui-system` |
-| **Nova** | Player Entity & Controller | `player-entity` |
-| **Obsidian** | Obstacle Intelligence | `obstacle-entity` |
-| **Nexus** | Game Rules & State Logic | `game-logic` |
-| **Chronos** | Lore & Documentation | `design-docs` |
-| **Forge** | Build & Deployment | `build-config` |
+🔗 **Part of the [Neon Surge Ecosystem](https://github.com/mayoka0/mayoka0#-neon-surge-architecture)**
 
 ### 🚀 How to Initialize
 1. Ensure [Node.js](https://nodejs.org/) is active.
