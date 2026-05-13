@@ -1,4 +1,13 @@
+<div align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=24&pause=1000&color=7aa2f7&center=true&vCenter=true&width=600&lines=Nexus:+Harmonizing+System+State...;Processing+Game+Rules...;Neon+Surge+Nexus+Online." alt="Typing SVG" />
+</div>
+
 # 🧠 Neon Surge | Game Logic Agent
+
+### 📊 Agent Telemetry
+<div align="center">
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=mayoka0&theme=tokyo-night&hide_border=true&area=true" width="100%" alt="Activity Graph" />
+</div>
 
 ### 🤖 Meet the Agent: Nexus
 **Nexus, the Master Orchestrator**, is the central intelligence of the Data Stream. While other agents handle the senses, Nexus handles the *will*. It is the cognitive core that decides when the game begins, how the difficulty scales, and when the connection is finally severed. Nexus doesn't just run the game; it enforces the reality of the Grid.
