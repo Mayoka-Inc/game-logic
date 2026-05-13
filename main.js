@@ -6,6 +6,7 @@ import { Player } from './js/entities/Player.js';
 import { Obstacle } from './js/entities/Obstacle.js';
 import { CollisionSystem } from './js/systems/CollisionSystem.js';
 import { UIManager } from './js/systems/UIManager.js';
+import { events } from './js/core/CentralEventBus.js';
 
 // --- CONFIGURATION ---
 const TUNNEL_RADIUS = 10;
@@ -153,8 +154,7 @@ function setGameState(newState) {
     // Transition effects
     if (newState === GameState.PLAYING) {
         if (oldState === GameState.MENU) {
-            audioManager.startEngine();
-            audioManager.startMusic();
+            events.emit('GAME_START');
         }
     }
 }
@@ -219,10 +219,10 @@ function checkLevelUp() {
         });
 
         // Audio intensity shift (tempo increases with level)
-        audioManager.updateGameSpeed(1.0 + (level * 0.05));
+        events.emit('SPEED_UPDATE', { speed: 1.0 + (level * 0.05) });
         
         // Visual feedback
-        uiManager.triggerGlitch();
+        events.emit('LEVEL_UP');
         console.log(`SYSTEM UPGRADE: LEVEL ${level} REACHED`);
     }
 }
@@ -274,7 +274,7 @@ function animate() {
                 
                 if (distXY < 3.5) {
                     comboMultiplier++;
-                    uiManager.updateMultiplier(comboMultiplier);
+                    events.emit('MULTIPLIER_UPDATE', { multiplier: comboMultiplier });
                 }
                 obstacle.hasBeenDodged = true;
             }
@@ -284,7 +284,7 @@ function animate() {
                 engine.scene.remove(obstacle.mesh);
                 obstacles.splice(i, 1);
                 score += 10;
-                uiManager.updateScore(score);
+                events.emit('SCORE_UPDATE', { score: score });
                 checkLevelUp();
             }
         }
@@ -310,7 +310,7 @@ function animate() {
         }
 
         // UI Updates
-        uiManager.updateSpeed(speed);
+        events.emit('SPEED_UPDATE', { speed: speed });
     }
 
     // Keep rendering even when paused/menu
@@ -320,12 +320,12 @@ function animate() {
 function gameOver() {
     currentState = GameState.GAME_OVER;
     comboMultiplier = 1;
-    uiManager.updateMultiplier(comboMultiplier);
-    audioManager.playZap();
-    uiManager.showGameOver(score);
+    events.emit('MULTIPLIER_UPDATE', { multiplier: comboMultiplier });
+    events.emit('PLAYER_HIT');
+    events.emit('GAME_OVER', { score: score });
 }
 
 // Kick off initialization
-uiManager.updateScore(score);
-uiManager.updateSpeed(speed);
+events.emit('SCORE_UPDATE', { score: score });
+events.emit('SPEED_UPDATE', { speed: speed });
 animate();
