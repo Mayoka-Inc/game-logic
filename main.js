@@ -159,6 +159,88 @@ function setGameState(newState) {
     }
 }
 
+/**
+ * Serializes the current game state into a JSON-compatible object.
+ */
+function exportGameState() {
+    const state = {
+        meta: {
+            timestamp: Date.now(),
+            version: '1.0.0'
+        },
+        game: {
+            score,
+            level,
+            speed,
+            comboMultiplier,
+            lastObstacleZ
+        },
+        player: {
+            position: {
+                x: player.logicPosition.x,
+                y: player.logicPosition.y
+            },
+            velocity: {
+                x: player.velocity.x,
+                y: player.velocity.y
+            }
+        },
+        obstacles: obstacles.map(obs => ({
+            x: obs.mesh.position.x,
+            y: obs.mesh.position.y,
+            z: obs.mesh.position.z,
+            type: obs.type || 'standard'
+        }))
+    };
+    
+    const json = JSON.stringify(state);
+    localStorage.setItem('neon_surge_save', json);
+    console.log('SYSTEM: Neural state synchronized to local buffer.');
+    return json;
+}
+
+/**
+ * Restores the game state from a JSON object.
+ */
+function importGameState(jsonString) {
+    try {
+        const state = JSON.parse(jsonString || localStorage.getItem('neon_surge_save'));
+        if (!state) return false;
+
+        // Restore core variables
+        score = state.game.score;
+        level = state.game.level;
+        speed = state.game.speed;
+        comboMultiplier = state.game.comboMultiplier;
+        lastObstacleZ = state.game.lastObstacleZ;
+
+        // Restore player
+        player.logicPosition.set(state.player.position.x, state.player.position.y);
+        player.mesh.position.set(state.player.position.x, state.player.position.y, 0);
+
+        // Clear and restore obstacles
+        obstacles.forEach(obs => engine.scene.remove(obs.mesh));
+        obstacles = [];
+        state.obstacles.forEach(data => {
+            const obs = new Obstacle(data.z);
+            obs.mesh.position.set(data.x, data.y, data.z);
+            engine.scene.add(obs.mesh);
+            obstacles.push(obs);
+        });
+
+        // Update UI
+        events.emit('SCORE_UPDATE', { score });
+        events.emit('SPEED_UPDATE', { speed });
+        events.emit('MULTIPLIER_UPDATE', { multiplier: comboMultiplier });
+
+        console.log('SYSTEM: Neural state restored from buffer.');
+        return true;
+    } catch (e) {
+        console.error('SYSTEM ERROR: Neural state corruption detected.', e);
+        return false;
+    }
+}
+
 // --- ADVANCED SPAWNING (PATTERN-BASED) ---
 function spawnPattern() {
     const patternType = Math.random();
